@@ -1,0 +1,24 @@
+{
+  "name": "reactjs-http-client",
+  "version": "0.1.0",
+  "description": "a library for making http request inside react apps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohammadkamraan/reactjs-http-client.git"
+  },
+  "keywords": [
+    "react-http",
+    "react-http-client",
+    "http-client"
+  ],
+  "author": "Mohammad Mahdi Kamran Talab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohammadkamraan/reactjs-http-client/issues"
+  },
+  "homepage": "https://github.com/mohammadkamraan/reactjs-http-client#readme"
+}
