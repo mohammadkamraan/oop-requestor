@@ -24,3 +24,15 @@ export interface IRequests {
 }
 
 export type HTTP_PACKAGE = (request: IRequest) => any;
+
+export interface IClear {
+  clear: () => void;
+}
+
+export interface ICompleted {
+  requestCompleted: () => void;
+}
+
+export interface IFiled {
+  requestFailed: () => void;
+}

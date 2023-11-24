@@ -34,13 +34,36 @@ export abstract class HttpClient<DataType> {
   public async requestsHandler() {
     const { requests, expectedData } = this.append();
     const httpRequests = requests.map(request => this.requestHandler(request));
-    const result = await Promise.all(httpRequests);
-    let data = {};
-    for (let index = 0; index < expectedData.length; index++) {
-      data[expectedData[index]] = result[index];
+    try {
+      if (!this.shouldSendRequest()) return;
+      const result = await Promise.all(httpRequests);
+      let data = {};
+      for (let index = 0; index < expectedData.length; index++) {
+        data[expectedData[index]] = result[index];
+      }
+      this._data = data as DataType;
+      await this.requestCompleted();
+    } catch (error) {
+      await this.requestFailed(error);
+    } finally {
+      await this.requestFinished();
     }
-    this._data = data as DataType;
-    console.log(this._data);
+  }
+
+  private async requestCompleted() {
+    return;
+  }
+
+  private async requestFailed(error) {
+    return;
+  }
+
+  private async requestFinished() {
+    return;
+  }
+
+  private async shouldSendRequest(): Promise<boolean> {
+    return true;
   }
 
   protected abstract append(): IRequests;
