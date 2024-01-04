@@ -176,6 +176,7 @@ export class HttpClientManager {
     instanceKey: string
   ): HttpClient<DataType, ErrorType, QueriesType> | undefined {
     const httpClient: HttpClient<DataType, ErrorType, QueriesType> | undefined = HttpClientManager.httpClientInstances.get(instanceKey);
+    if (!httpClient) throw new Error("No available instance for provided request key");
     return httpClient;
   }
 
