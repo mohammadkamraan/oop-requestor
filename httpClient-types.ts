@@ -1,3 +1,5 @@
+import { ClientRequest } from "./httpClient";
+
 export enum STATUS {
   LOADING = "loading",
   ERROR = "error",
@@ -26,13 +28,39 @@ export interface IRequests {
 export type HTTP_PACKAGE = (request: IRequest) => any;
 
 export interface IClear {
-  clear: () => void;
+  clear: () => void | Promise<void>;
 }
 
-export interface ICompleted {
-  requestCompleted: () => void;
+export interface ISucceed {
+  requestSucceed: () => Promise<void> | void;
 }
 
 export interface IFiled {
-  requestFailed: () => void;
+  requestFailed: () => Promise<void> | void;
 }
+
+export interface IFinished {
+  requestFinished: () => Promise<void> | void;
+}
+
+export interface IShouldRequestSend {
+  shouldRequestSend: () => boolean | Promise<boolean>;
+}
+
+export interface Constructable<T> {
+  new (...args: any): T;
+}
+
+export interface IMapResultToData {
+  mapResultToData(data: any): void;
+}
+
+export interface IFilterRequests {
+  filterRequests(request: ClientRequest): void;
+}
+
+export interface IOnInit {
+  onInitialization(): void;
+}
+
+export type NullAble<T> = null | T;
