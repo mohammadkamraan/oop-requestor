@@ -125,8 +125,8 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
 }
 
 export class ClientRequest implements IRequest {
-  body?: { [key: string]: any } | undefined;
   method: string | COMMON_HTTP_METHODS;
+  body?: { [key: string]: any } | undefined;
   params?: { [key: string]: string } | undefined;
   url: string;
 
@@ -176,7 +176,6 @@ export class HttpClientManager {
     instanceKey: string
   ): HttpClient<DataType, ErrorType, QueriesType> | undefined {
     const httpClient: HttpClient<DataType, ErrorType, QueriesType> | undefined = HttpClientManager.httpClientInstances.get(instanceKey);
-    if (!httpClient) throw new Error("No available instance for provided request key");
     return httpClient;
   }
 
