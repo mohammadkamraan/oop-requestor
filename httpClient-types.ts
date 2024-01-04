@@ -28,23 +28,23 @@ export interface IRequests {
 export type HTTP_PACKAGE = (request: IRequest) => any;
 
 export interface IClear {
-  clear: () => void | Promise<void>;
+  clear(): void | Promise<void>;
 }
 
 export interface ISucceed {
-  requestSucceed: () => Promise<void> | void;
+  requestSucceed(): Promise<void> | void;
 }
 
 export interface IFiled {
-  requestFailed: () => Promise<void> | void;
+  requestFailed(): Promise<void> | void;
 }
 
 export interface IFinished {
-  requestFinished: () => Promise<void> | void;
+  requestFinished(): Promise<void> | void;
 }
 
 export interface IShouldRequestSend {
-  shouldRequestSend: () => boolean | Promise<boolean>;
+  shouldRequestSend(): boolean | Promise<boolean>;
 }
 
 export interface Constructable<T> {

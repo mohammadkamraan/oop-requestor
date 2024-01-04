@@ -20,7 +20,7 @@ export function useHttpClient<DataType = unknown, ErrorType = any, QueriesType =
 
     const httpClientInstance = HttpClientManager.GetHttpInstance<DataType, ErrorType, QueriesType>(instanceKey);
 
-    setData(httpClientInstance?.data);
+    setData(httpClientInstance?.data as DataType);
     setError(httpClientInstance?.error as ErrorType);
     setStatus(httpClientInstance?.status as STATUS);
   };

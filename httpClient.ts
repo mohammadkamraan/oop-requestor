@@ -26,7 +26,7 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
   public get data() {
     return this._data;
   }
-  protected set data(data: any) {
+  protected set data(data) {
     this._data = data;
   }
 
@@ -76,7 +76,7 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
     for (let index = 0; index < this._expectedData.length; index++) {
       data[this._expectedData[index]] = result[index];
     }
-    this.mapResultToData(data);
+    this.mapResultToData(data as DataType);
   }
 
   public async sendRequests() {
@@ -97,8 +97,8 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
     }
   }
 
-  public mapResultToData(data: any) {
-    this._data = data as DataType;
+  public mapResultToData(data: DataType) {
+    this._data = data;
   }
 
   public async requestSucceed() {
