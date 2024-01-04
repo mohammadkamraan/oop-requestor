@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { HttpClient, HttpClientManager } from "./httpClient";
 import { NullAble, STATUS, Constructable } from "./httpClient-types";
 
-export function useHttpClient<DataType, ErrorType>(
+export function useHttpClient<DataType = unknown, ErrorType = any, QueriesType = any>(
   httpClient: Constructable<HttpClient<DataType, ErrorType>>,
   queries: NullAble<any>,
   instanceKey: string
@@ -18,11 +18,11 @@ export function useHttpClient<DataType, ErrorType>(
 
     await httpClientManager.sendRequests(queries, instanceKey);
 
-    const httpClientInstance = HttpClientManager.GetHttpInstance(instanceKey);
+    const httpClientInstance = HttpClientManager.GetHttpInstance<DataType, ErrorType, QueriesType>(instanceKey);
 
-    setData(httpClientInstance.data);
-    setError(httpClientInstance.error);
-    setStatus(httpClientInstance.status);
+    setData(httpClientInstance?.data);
+    setError(httpClientInstance?.error as ErrorType);
+    setStatus(httpClientInstance?.status as STATUS);
   };
 
   useEffect(() => {

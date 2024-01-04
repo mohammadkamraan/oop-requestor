@@ -76,7 +76,6 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
     for (let index = 0; index < this._expectedData.length; index++) {
       data[this._expectedData[index]] = result[index];
     }
-
     this.mapResultToData(data);
   }
 
@@ -86,9 +85,9 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
       this.setAppendedData();
       const shouldRequestSend = await this.shouldRequestSend();
       if (!shouldRequestSend) return;
+      this._status = STATUS.SUCCESS;
       await this.requestsHandler();
       await this.requestSucceed();
-      this._status = STATUS.SUCCESS;
     } catch (error: ErrorType | any) {
       this._error = error;
       await this.requestFailed();
@@ -162,39 +161,36 @@ export class HttpClientManager {
     HttpClientManager.GetHttpInstance(instanceKey)!.requestKey = instanceKey;
   }
 
-  static GetInstance<DataType = any, ErrorType = any>(
-    httpClient: Constructable<HttpClient<DataType, ErrorType>>,
+  static GetInstance<DataType = any, ErrorType = any, QueryType = any>(
+    httpClient: Constructable<HttpClient<DataType, ErrorType, QueryType>>,
     instanceKey: string
   ): HttpClientManager {
-    // let httpClientInstance = HttpClientManager.GetHttpInstance(instanceKey);
-    // if (httpClientInstance) return httpClientInstance;
-    // const httpClientManager = new HttpClientManager(instanceKey);
-    // return httpClientManager;
-    HttpClientManager.httpClientInstances.set(instanceKey, new httpClient());
+    if (!HttpClientManager.GetHttpInstance(instanceKey)) {
+      HttpClientManager.httpClientInstances.set(instanceKey, new httpClient());
+    }
     const httpClientManager = new HttpClientManager(instanceKey);
     return httpClientManager;
-    // return HttpClientManager.httpClientInstances.get(instanceKey) as HttpClient;
   }
 
-  static GetHttpInstance(instanceKey: string): HttpClient {
-    const httpClient = HttpClientManager.httpClientInstances.get(instanceKey);
-    if (!httpClient) {
-      throw new Error("No available httpClient instance for provided instance key");
-    }
-    return httpClient as any;
+  static GetHttpInstance<DataType = any, ErrorType = any, QueriesType = any>(
+    instanceKey: string
+  ): HttpClient<DataType, ErrorType, QueriesType> | undefined {
+    const httpClient: HttpClient<DataType, ErrorType, QueriesType> | undefined = HttpClientManager.httpClientInstances.get(instanceKey);
+    return httpClient;
   }
 
   static InstancesAreEmpty(): boolean {
     return HttpClientManager.httpClientInstances.size === 0;
   }
 
-  public sendRequests(queries: any, requestKey: string) {
+  public async sendRequests(queries: any, requestKey: string) {
     const httpClientInstance = HttpClientManager.GetHttpInstance(requestKey);
     if (HttpClientManager.InstancesAreEmpty() || !httpClientInstance) {
       throw new Error("you should call static getInstance method before calling the sendRequests method. NO INSTANCE FOUND");
     }
     httpClientInstance.queries = queries;
-    httpClientInstance.sendRequests();
+    await httpClientInstance.sendRequests();
+    HttpClientManager.httpClientInstances.set(requestKey, httpClientInstance);
   }
 
   static ClearAll() {
