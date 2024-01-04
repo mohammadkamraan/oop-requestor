@@ -25,12 +25,6 @@ export interface IRequests {
   expectedData: string[];
 }
 
-export type HTTP_PACKAGE = (request: IRequest) => any;
-
-export interface IClear {
-  clear(): void | Promise<void>;
-}
-
 export interface ISucceed {
   requestSucceed(): Promise<void> | void;
 }
