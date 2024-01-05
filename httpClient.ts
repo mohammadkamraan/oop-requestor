@@ -4,16 +4,16 @@ import {
   IRequests,
   ISucceed,
   IFinished,
-  IFiled,
   IShouldRequestSend,
   NullAble,
   COMMON_HTTP_METHODS,
   IMapResultToData,
   Constructable,
   IOnInit,
+  IFailed,
 } from "./httpClient-types";
 export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = any>
-  implements ISucceed, IFinished, IFiled, IShouldRequestSend, IMapResultToData, IOnInit
+  implements ISucceed, IFinished, IFailed, IShouldRequestSend, IMapResultToData, IOnInit
 {
   private _data: NullAble<DataType> = null;
   private _queries: NullAble<QueryType> = null;
@@ -76,7 +76,7 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
     for (let index = 0; index < this._expectedData.length; index++) {
       data[this._expectedData[index]] = result[index];
     }
-    this.mapResultToData(data as DataType);
+    await this.mapResultToData(data as DataType);
   }
 
   public async sendRequests() {
@@ -90,14 +90,14 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
       await this.requestSucceed();
     } catch (error: ErrorType | any) {
       this._error = error;
-      await this.requestFailed();
       this._status = STATUS.ERROR;
+      await this.requestFailed();
     } finally {
       await this.requestFinished();
     }
   }
 
-  public mapResultToData(data: DataType) {
+  public async mapResultToData(data: DataType) {
     this._data = data;
   }
 
@@ -157,8 +157,8 @@ export class HttpClientManager {
   static httpClientInstances: Map<string, HttpClient> = new Map();
 
   private constructor(instanceKey: string) {
-    HttpClientManager.GetHttpInstance(instanceKey)!.onInitialization();
     HttpClientManager.GetHttpInstance(instanceKey)!.requestKey = instanceKey;
+    HttpClientManager.GetHttpInstance(instanceKey)!.onInitialization();
   }
 
   static GetInstance<DataType = any, ErrorType = any, QueryType = any>(
@@ -183,7 +183,20 @@ export class HttpClientManager {
     return HttpClientManager.httpClientInstances.size === 0;
   }
 
-  public async sendRequests(queries: any, requestKey: string) {
+  static ClearAll() {
+    HttpClientManager.httpClientInstances.clear();
+  }
+
+  static ClearByKey(requestKey: string) {
+    if (!HttpClientManager.GetHttpInstance(requestKey)) throw new Error("No matched instances, possibly the provided key is wrong");
+    HttpClientManager.httpClientInstances.delete(requestKey);
+  }
+
+  static GetAllRequestKeys() {
+    return HttpClientManager.httpClientInstances.keys();
+  }
+
+  public async sendRequests<DataType = any, ErrorType = any, QueriesType = any>(queries: any, requestKey: string) {
     const httpClientInstance = HttpClientManager.GetHttpInstance(requestKey);
     if (HttpClientManager.InstancesAreEmpty() || !httpClientInstance) {
       throw new Error("you should call static getInstance method before calling the sendRequests method. NO INSTANCE FOUND");
@@ -191,14 +204,6 @@ export class HttpClientManager {
     httpClientInstance.queries = queries;
     await httpClientInstance.sendRequests();
     HttpClientManager.httpClientInstances.set(requestKey, httpClientInstance);
-  }
-
-  static ClearAll() {
-    HttpClientManager.httpClientInstances.clear();
-  }
-
-  static ClearByKey(instanceKey: string) {
-    if (!HttpClientManager.GetHttpInstance(instanceKey)) throw new Error("No matched instances, possibly the provided key is wrong");
-    HttpClientManager.httpClientInstances.delete(instanceKey);
+    return httpClientInstance as HttpClient<DataType, ErrorType, QueriesType>;
   }
 }

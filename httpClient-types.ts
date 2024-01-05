@@ -29,7 +29,7 @@ export interface ISucceed {
   requestSucceed(): Promise<void> | void;
 }
 
-export interface IFiled {
+export interface IFailed {
   requestFailed(): Promise<void> | void;
 }
 
@@ -47,10 +47,6 @@ export interface Constructable<T> {
 
 export interface IMapResultToData {
   mapResultToData(data: any): void;
-}
-
-export interface IFilterRequests {
-  filterRequests(request: ClientRequest): void;
 }
 
 export interface IOnInit {
