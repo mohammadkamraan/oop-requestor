@@ -1,6 +1,6 @@
 {
   "name": "oop-requestor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Powerful https library developed based on OOP for large scale applications",
   "main": "http-client-main.ts",
   "scripts": {
