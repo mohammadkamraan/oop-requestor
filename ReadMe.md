@@ -162,7 +162,7 @@ The `ClientRequest` class represents individual HTTP requests. It has the follow
 - **Optional `cache`:** Represents the cache of the fetch api request.
 - **Optional `credentials`:** Represents the credentials of the fetch api request.
 - **Optional `redirect`:** Represents the redirect of the fetch api request.
-- **Optional `referrerPolicy`:** Represents the redirect of the fetch api request.
+- **Optional `referrerPolicy`:** Represents the referrerPolicy of the fetch api request.
 
 **Example:**
 
