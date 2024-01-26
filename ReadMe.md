@@ -157,6 +157,12 @@ The `ClientRequest` class represents individual HTTP requests. It has the follow
 - **Required `method`:** Represents the HTTP method of the request. -
 - **Optional `params`:** Represents the parameters of the request. -
 - **Optional `body`:** Represents the body of the request.
+- **Optional `headers`:** Represents the headers of the request.
+- **Optional `mode`:** Represents the mode of the fetch api request.
+- **Optional `cache`:** Represents the cache of the fetch api request.
+- **Optional `credentials`:** Represents the credentials of the fetch api request.
+- **Optional `redirect`:** Represents the redirect of the fetch api request.
+- **Optional `referrerPolicy`:** Represents the redirect of the fetch api request.
 
 **Example:**
 
