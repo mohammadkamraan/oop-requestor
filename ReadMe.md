@@ -1,3 +1,7 @@
+## What is new on version 1.1.0 :
+
+**Complete support of JavaScript fetch api options**
+
 # oop-requestor
 
 **what is oop-requestor:**  
