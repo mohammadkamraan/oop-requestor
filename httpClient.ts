@@ -126,25 +126,43 @@ export abstract class HttpClient<DataType = any, ErrorType = any, QueryType = an
 
 export class ClientRequest implements IRequest {
   method: string | COMMON_HTTP_METHODS;
-  body?: { [key: string]: any } | undefined;
-  params?: { [key: string]: string } | undefined;
   url: string;
+  headers?: { [key: string]: any } | undefined;
+  params?: { [key: string]: string } | undefined;
+  body?: { [key: string]: any } | undefined;
+  mode?: string | undefined;
+  cache?: string | undefined;
+  credentials?: string | undefined;
+  redirect?: string | undefined;
+  referrerPolicy?: string | undefined;
 
   constructor(
     url: string,
     method: string | COMMON_HTTP_METHODS,
-    params?: { [key: string]: string } | undefined,
-    body?: { [key: string]: any } | undefined
+    params?: { [key: string]: string },
+    body?: { [key: string]: any } | FormData,
+    headers?: { [key: string]: any },
+    mode?: string,
+    cache?: string,
+    credentials?: string,
+    redirect?: string,
+    referrerPolicy?: string
   ) {
     this.body = body;
     this.method = method;
     this.params = params;
     this.url = url;
+    this.headers = headers;
+    this.mode = mode;
+    this.cache = cache;
+    this.credentials = credentials;
+    this.redirect = redirect;
+    this.referrerPolicy = referrerPolicy;
   }
 }
 
 export class ClientRequests implements IRequests {
-  requests: IRequest[];
+  requests: ClientRequest[];
   expectedData: string[];
 
   constructor(requests: IRequest[], expectedData: string[]) {

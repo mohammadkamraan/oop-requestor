@@ -1,5 +1,3 @@
-import { ClientRequest } from "./httpClient";
-
 export enum STATUS {
   LOADING = "loading",
   ERROR = "error",
@@ -18,6 +16,12 @@ export interface IRequest {
   url: string;
   body?: { [key: string]: any };
   params?: { [key: string]: string };
+  mode?: string;
+  cache?: string;
+  credentials?: string;
+  headers?: { [key: string]: any };
+  redirect?: string;
+  referrerPolicy?: string;
 }
 
 export interface IRequests {
