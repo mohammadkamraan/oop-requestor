@@ -911,7 +911,7 @@ The @Connection decorator is created to allow the developers to handle web socke
 lets provide an example for using this decorator and explain how this decorator works on that example:
 ```typescript
 
-import { Connection } from 'oop-requestor/websocket';
+import { Connection } from 'oop-requestor';
 
 class WebSocketExample {
 	@Connection({url: "You're web socket url", protocols: []})
